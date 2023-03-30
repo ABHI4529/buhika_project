@@ -59,26 +59,33 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 30),
-                    child: TextBox(
-                      controller: _nameController,
-                      textInputAction: TextInputAction.next,
-                      header: "Student Name",
+                    child: InfoLabel(
+                      label: "Student Name",
+                      child: TextBox(
+                        controller: _nameController,
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
-                    child: TextBox(
-                      controller: _emailController,
-                      textInputAction: TextInputAction.next,
-                      header: "Email",
+                    child: InfoLabel(
+                      label: "Email",
+                      child: TextBox(
+                        controller: _emailController,
+                        textInputAction: TextInputAction.next,
+
+                      ),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
-                    child: TextBox(
-                      controller: _passController,
-                      textInputAction: TextInputAction.next,
-                      header: "Password",
+                    child: InfoLabel(
+                      label: "Password",
+                      child: TextBox(
+                        controller: _passController,
+                        textInputAction: TextInputAction.next,
+                      ),
                     ),
                   ),
                   Row(
@@ -100,10 +107,10 @@ class _AddStudentState extends State<AddStudent> {
                                 controller: _fieldController,
                                 textInputAction: TextInputAction.next,
                                 placeholder: "Select Field",
-                                items: const [
-                                  "Mechanical",
-                                  "Electrical",
-                                  "Computer Engineering"
+                                items: [
+                                  AutoSuggestBoxItem(value: "Mechanical", label: "Mechanical"),
+                                  AutoSuggestBoxItem(value: "Electrical", label: "Electrical"),
+                                  AutoSuggestBoxItem(value: "Computer Engineering", label: "Computer Engineering"),
                                 ])),
                       ),
                       Expanded(
@@ -113,11 +120,11 @@ class _AddStudentState extends State<AddStudent> {
                                 controller: _yearController,
                                 textInputAction: TextInputAction.next,
                                 placeholder: "Select Year",
-                                items: const [
-                                  "1st Year",
-                                  "2nd Year",
-                                  "3rd Year",
-                                  "4th Year"
+                                items: [
+                                  AutoSuggestBoxItem(value: "1st Year", label: "1st Year"),
+                                  AutoSuggestBoxItem(value: "2nd Year", label: "2nd Year"),
+                                  AutoSuggestBoxItem(value: "3rd Year", label: "3rd Year")
+                                  ,AutoSuggestBoxItem(value: "4th Year", label: "4th Year")
                                 ])),
                       ),
                       Expanded(
@@ -127,7 +134,12 @@ class _AddStudentState extends State<AddStudent> {
                                 controller: _sectionController,
                                 textInputAction: TextInputAction.next,
                                 placeholder: "Select Section",
-                                items: const ["A", "B", "C", "D", "E"])),
+                                items:  [
+                                  AutoSuggestBoxItem(value: "A", label: "A"),
+                                  AutoSuggestBoxItem(value: "B", label: "B"),
+                                  AutoSuggestBoxItem(value: "C", label: "C"),
+                                  AutoSuggestBoxItem(value: "D", label: "D")
+                                ])),
                       ),
                     ],
                   ),

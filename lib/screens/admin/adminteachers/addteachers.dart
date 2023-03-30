@@ -36,19 +36,27 @@ class _AddTeachersState extends State<AddTeachers> {
         children: [
           Column(
             children: [
-              TextBox(
-                header: "Teacher Name",
-                controller: _teacherName,
+              InfoLabel(
+                label: "Teacher  Name",
+                child: TextBox(
+
+                  controller: _teacherName,
+                ),
               ),
               Container(height: 10),
-              TextBox(
-                controller: _teacherEmail,
-                header: "Teacher Email",
+              InfoLabel(
+                label: "Teacher Email",
+                child: TextBox(
+                  controller: _teacherEmail,
+
+                ),
               ),
               Container(height: 10),
-              TextBox(
-                controller: _teacherPassword,
-                header: "Teacher Password",
+              InfoLabel(
+                label: "Teacher Password",
+                child: TextBox(
+                  controller: _teacherPassword,
+                ),
               ),
               Container(height: 10),
               Row(
@@ -81,15 +89,17 @@ class _AddTeachersState extends State<AddTeachers> {
                     .toList(),
               ),
               Container(height: 10),
-              TextBox(
-                header: "Add Subject",
-                controller: _subjectName,
-                onSubmitted: (value) {
-                  setState(() {
-                    _subjects.add(value);
-                    _subjectName.clear();
-                  });
-                },
+              InfoLabel(
+                label: "Add Subject",
+                child: TextBox(
+                  controller: _subjectName,
+                  onSubmitted: (value) {
+                    setState(() {
+                      _subjects.add(value);
+                      _subjectName.clear();
+                    });
+                  },
+                ),
               ),
             ],
           ),

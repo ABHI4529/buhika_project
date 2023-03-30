@@ -59,31 +59,28 @@ class _AddEventState extends State<AddEvent> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               alignment: Alignment.centerRight,
-              child: Flyout(
+              child: FlyoutTarget(
                   controller: flyoutController,
-                  content: (context) {
-                    return FlyoutContent(
-                        child: Container(
-                      width: 200,
-                      padding: const EdgeInsets.all(5),
-                      child: SizedBox(
-                        height: 35,
-                        child: FilledButton(
-                          onPressed: () {
-                            flyoutController.close();
-                            Navigator.push(
-                                context,
-                                FluentPageRoute(
-                                    builder: (context) => TeacherEvents()));
-                          },
-                          child: const Center(child: Text("Show All Events")),
-                        ),
-                      ),
-                    ));
-                  },
                   child: IconButton(
                     onPressed: () {
-                      flyoutController.open();
+                      flyoutController.showFlyout(builder: (context)=> FlyoutContent(
+                        child: Container(
+                        width: 200,
+                        padding: const EdgeInsets.all(5),
+                        child: SizedBox(
+                          height: 35,
+                          child: FilledButton(
+                            onPressed: () {
+                              flyoutController.dispose();
+                              Navigator.push(
+                                  context,
+                                  FluentPageRoute(
+                                      builder: (context) => TeacherEvents()));
+                            },
+                            child: const Center(child: Text("Show All Events")),
+                          ),
+                        ),
+                      )));
                     },
                     icon: const Icon(
                       mat.Icons.more_horiz,
@@ -94,9 +91,11 @@ class _AddEventState extends State<AddEvent> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: TextBox(
-                header: "Title",
-                controller: _titleController,
+              child: InfoLabel(
+                label: "Title",
+                child: TextBox(
+                  controller: _titleController,
+                ),
               ),
             ),
             Container(
@@ -135,18 +134,22 @@ class _AddEventState extends State<AddEvent> {
                 )),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: TextBox(
-                header: "Short Description",
-                maxLines: 4,
-                controller: _shortDescription,
+              child: InfoLabel(
+                label: "Short Description",
+                child: TextBox(
+                  maxLines: 4,
+                  controller: _shortDescription,
+                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: TextBox(
-                header: "Long Description",
-                maxLines: 10,
-                controller: _longDescription,
+              child: InfoLabel(
+                label: "Long Description",
+                child: TextBox(
+                  maxLines: 10,
+                  controller: _longDescription,
+                ),
               ),
             ),
             Container(

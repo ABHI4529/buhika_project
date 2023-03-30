@@ -5,7 +5,6 @@ import 'package:cummins/screens/admin/adminstudent/addstudent.dart';
 import 'package:easy_table/easy_table.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AdminStudents extends StatefulWidget {
   AdminStudents({Key? key}) : super(key: key);
@@ -57,7 +56,9 @@ class _AdminStudentsState extends State<AdminStudents> {
                 height: double.maxFinite,
                 padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
                 child: EasyTable(
+                  columnWidthBehavior: ColumnWidthBehavior.fit,
                   EasyTableModel<Student>(
+
                       rows: snapshot.data!.docs
                           .map((e) => Student(e['name'], e['email'], e['field'],
                               e['rolnum'], e['section'], e['year']))
@@ -77,7 +78,7 @@ class _AdminStudentsState extends State<AdminStudents> {
                         EasyTableColumn(
                             name: "Year", stringValue: (row) => row.year),
                       ]),
-                  columnsFit: true,
+
                   onRowTap: (Student std) {},
                   focusable: true,
                 ));

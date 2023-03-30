@@ -35,6 +35,7 @@ class _AdminTeachersState extends State<AdminTeachers> {
                     return const Center(child: ProgressRing());
                   }
                   return EasyTable(
+                    columnWidthBehavior: ColumnWidthBehavior.fit,
                     EasyTableModel<Teacher>(
                         rows: snapshot.data!.docs
                             .map((e) => Teacher(e['name'], e['email']))
@@ -47,7 +48,6 @@ class _AdminTeachersState extends State<AdminTeachers> {
                               name: "Teacher Email",
                               stringValue: (row) => row.teacherEmail)
                         ]),
-                    columnsFit: true,
                   );
                 },
               ),

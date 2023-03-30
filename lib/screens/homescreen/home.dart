@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import '../events/events.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  Home({Key? key, this.email}) : super(key: key);
+  String? email;
 
   @override
   State<Home> createState() => _HomeState();
@@ -49,7 +50,9 @@ class _HomeState extends State<Home> {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context, FluentPageRoute(builder: (context) => FeedBack()));
+                    context, FluentPageRoute(builder: (context) => FeedBack(
+                  field: widget.email,
+                )));
               },
               child: CButton(
                 padding: 20,

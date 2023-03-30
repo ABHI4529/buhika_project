@@ -4,7 +4,6 @@ import 'package:flutter/material.dart' as mat;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../addnotifications/addnotifications.dart';
 
@@ -104,20 +103,22 @@ class _AttendenceState extends State<Attendence> {
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.only(left: 15, right: 5),
-                      child: TextBox(
-                        readOnly: true,
-                        controller: _fieldController,
-                        onTap: () {
-                          showCupertinoModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return FieldList(
-                                  list: _fieldList,
-                                  controller: _fieldController,
-                                );
-                              });
-                        },
-                        header: "Field",
+                      child: InfoLabel(
+                        label: "Field",
+                        child: TextBox(
+                          readOnly: true,
+                          controller: _fieldController,
+                          onTap: () {
+                            showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return FieldList(
+                                    list: _fieldList,
+                                    controller: _fieldController,
+                                  );
+                                });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -125,20 +126,21 @@ class _AttendenceState extends State<Attendence> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 5),
-                      child: TextBox(
-                        readOnly: true,
-                        controller: _yearController,
-                        onTap: () {
-                          showCupertinoModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return FieldList(
-                                  list: _yearList,
-                                  controller: _yearController,
-                                );
-                              });
-                        },
-                        header: "Year",
+                      child: InfoLabel(
+                        label: "Year",
+                        child: TextBox(
+                          readOnly: true,
+                          controller: _yearController,
+                          onTap: () {
+                            showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return FieldList(
+                                    list: _yearList,
+                                    controller: _yearController,
+                                  );
+                                });
+                          }),
                       ),
                     ),
                   ),
@@ -146,20 +148,22 @@ class _AttendenceState extends State<Attendence> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 5),
-                      child: TextBox(
-                        readOnly: true,
-                        controller: _sectionController,
-                        onTap: () {
-                          showCupertinoModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return FieldList(
-                                  list: _sectionList,
-                                  controller: _sectionController,
-                                );
-                              });
-                        },
-                        header: "Section",
+                      child: InfoLabel(
+                        label: "Section",
+                        child: TextBox(
+                          readOnly: true,
+                          controller: _sectionController,
+                          onTap: () {
+                            showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return FieldList(
+                                    list: _sectionList,
+                                    controller: _sectionController,
+                                  );
+                                });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -197,7 +201,7 @@ class _AttendenceState extends State<Attendence> {
                       controller: _teacherController,
                       placeholder: "Teacher Name",
                       items: snapshot.data!.docs
-                          .map((e) => "${e['name']}")
+                          .map((e) => AutoSuggestBoxItem(value: "${e['name']}", label: "${e['name']}"))
                           .toList(),
                     );
                   }),

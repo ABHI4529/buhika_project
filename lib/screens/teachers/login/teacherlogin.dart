@@ -61,35 +61,37 @@ class _LoginState extends State<TeacherLogin> {
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 10),
-                          child: TextBox(
-                            controller: _emailController,
-                            header: "Email",
-                            headerStyle: const TextStyle(fontSize: 15),
-                            style: const TextStyle(fontSize: 15),
-                            padding: const EdgeInsets.all(10),
-                            suffix: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Icon(
-                                  mat.Icons.account_circle,
-                                  size: 20,
-                                )),
+                          child: InfoLabel(
+                            label: "Email",
+                            child: TextBox(
+                              controller: _emailController,
+                              style: const TextStyle(fontSize: 15),
+                              padding: const EdgeInsets.all(10),
+                              suffix: const Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Icon(
+                                    mat.Icons.account_circle,
+                                    size: 20,
+                                  )),
+                            ),
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(bottom: 10),
-                          child: TextBox(
-                            controller: _passwordController,
-                            obscureText: _obsure,
-                            header: "Password",
-                            headerStyle: const TextStyle(fontSize: 15),
-                            style: const TextStyle(fontSize: 15),
-                            padding: const EdgeInsets.all(10),
-                            suffix: const Padding(
-                                padding: EdgeInsets.all(5),
-                                child: Icon(
-                                  mat.Icons.remove_red_eye,
-                                  size: 20,
-                                )),
+                          child: InfoLabel(
+                            label: "Password",
+                            child: TextBox(
+                              controller: _passwordController,
+                              obscureText: _obsure,
+                              style: const TextStyle(fontSize: 15),
+                              padding: const EdgeInsets.all(10),
+                              suffix: const Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Icon(
+                                    mat.Icons.remove_red_eye,
+                                    size: 20,
+                                  )),
+                            ),
                           ),
                         ),
                         Container(

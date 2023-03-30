@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_table/easy_table.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as mat;
 import 'package:intl/intl.dart';
 
 class AdminRegister extends StatefulWidget {
@@ -12,6 +13,7 @@ class AdminRegister extends StatefulWidget {
 
 class _AdminRegisterState extends State<AdminRegister> {
   List students = [];
+  DateTime _selectedDate = DateTime.now();
 
   Future getAllStudents() async {
     String s = "";
@@ -50,17 +52,37 @@ class _AdminRegisterState extends State<AdminRegister> {
   String _section = "";
   String _teacher = "";
 
+
   @override
   Widget build(BuildContext context) {
+    var data_date = DateTime(dt.year, dt.month, dt.day);
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("register").snapshots(),
+        stream: FirebaseFirestore.instance.collection("register").where('date', isGreaterThan: data_date).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+          List<String> preFields = [];
+          List<String> preYears = [];
+          List<String> years = [];
+          List<String> fields = [];
+          List<String> sections = [];
+          List<String> teachers = [];
+
           if (!snapshot.hasData) {
             return const Center(child: ProgressRing());
           }
+          if(snapshot.data != null){
+            for (var element in snapshot.data!.docs) {
+              preFields.add(element['field']);
+              preYears.add(element['year']);
+              sections.add(element['section']);
+              teachers.add(element['teacher']);
+            }
+            fields = preFields.toSet().toList();
+            years = preYears.toSet().toList();
+          }
           return ScaffoldPage(
             header: PageHeader(
-              title: Text("Register"),
+              title: const Text("Register"),
               commandBar: Container(
                 width: 400,
                 child: CommandBar(
@@ -68,7 +90,37 @@ class _AdminRegisterState extends State<AdminRegister> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     primaryItems: [
                       CommandBarButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            showDialog(context: context, builder: (context){
+                              return ContentDialog(
+                                title: const Text("Select Date"),
+                                content: DatePicker(
+
+                                  selected: DateTime.now(),
+                                  onChanged: (value){
+                                    setState(() {
+                                      _selectedDate = value;
+                                    });
+                                  },
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: const Text("Cancel"),
+                                    onPressed: (){},
+                                  ),
+                                  FilledButton(
+                                    child: const Text("Select"),
+                                    onPressed: (){
+                                      setState(() {
+                                        dt = _selectedDate;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                          },
                           label: Text(dateFormat.format(dt)),
                           icon: Icon(
                             FluentIcons.date_time,
@@ -88,7 +140,7 @@ class _AdminRegisterState extends State<AdminRegister> {
                         child: AutoSuggestBox(
                             controller: _fieldController,
                             onSelected: (value) {
-                              if (value.isEmpty) {
+                              if (value.value == null) {
                                 setState(() {
                                   _onfieldselected = false;
                                 });
@@ -99,8 +151,8 @@ class _AdminRegisterState extends State<AdminRegister> {
                               }
                             },
                             placeholder: "Select Field",
-                            items: snapshot.data!.docs
-                                .map((e) => "${e['field']}")
+                            items: fields
+                                .map((e) => AutoSuggestBoxItem(value: "${e}", label: "${e}"))
                                 .toList()),
                       ),
                       Container(
@@ -112,7 +164,7 @@ class _AdminRegisterState extends State<AdminRegister> {
                               child: AutoSuggestBox(
                                   controller: _yearController,
                                   onSelected: (value) {
-                                    if (value.isEmpty) {
+                                    if (value.value == null) {
                                       setState(() {
                                         _onyearselected = false;
                                       });
@@ -123,8 +175,8 @@ class _AdminRegisterState extends State<AdminRegister> {
                                     }
                                   },
                                   placeholder: "Select Year",
-                                  items: snapshot.data!.docs
-                                      .map((e) => "${e['year']}")
+                                  items: years
+                                      .map((e) => AutoSuggestBoxItem(value: "${e}", label: "${e}"))
                                       .toList()),
                             )
                           : Container(),
@@ -137,7 +189,7 @@ class _AdminRegisterState extends State<AdminRegister> {
                               child: AutoSuggestBox(
                                   controller: _sectionController,
                                   onSelected: (value) {
-                                    if (value.isEmpty) {
+                                    if (value.value  == null) {
                                       setState(() {
                                         _onsectionselected = false;
                                       });
@@ -147,10 +199,9 @@ class _AdminRegisterState extends State<AdminRegister> {
                                       });
                                     }
                                   },
-                                  placeholder: "Select Section",
-                                  items: snapshot.data!.docs
-                                      .map((e) => "${e['section']}")
-                                      .toList()),
+                                items: sections.toSet().toList()
+                                    .map((e) => AutoSuggestBoxItem(value: "${e}", label: "${e}")).toList(),
+                                  placeholder: "Select Section",),
                             )
                           : Container(),
                       Container(
@@ -162,7 +213,8 @@ class _AdminRegisterState extends State<AdminRegister> {
                               child: AutoSuggestBox(
                                   controller: _teacherController,
                                   onSelected: (value) {
-                                    if (value.isEmpty) {
+                                    items:
+                                    if (value.value == null) {
                                       setState(() {
                                         _onteacherselected = false;
                                       });
@@ -173,8 +225,8 @@ class _AdminRegisterState extends State<AdminRegister> {
                                     }
                                   },
                                   placeholder: "Select Teacher",
-                                  items: snapshot.data!.docs
-                                      .map((e) => "${e['teacher']}")
+                                  items: teachers.toSet().toList()
+                                      .map((e) => AutoSuggestBoxItem(value: "${e}", label: "${e}"))
                                       .toList()),
                             )
                           : Container(),
@@ -223,11 +275,12 @@ class _AdminRegisterState extends State<AdminRegister> {
                             Color tileColor = Colors.white;
                             if (students
                                 .contains(snapshot.data!.docs[index]['name'])) {
-                              tileColor = Colors.blue.dark;
+                              tileColor = Colors.green;
                             } else {
                               tileColor = Colors.red.dark;
                             }
                             return ListTile(
+                              tileColor: ButtonState.resolveWith((states) => tileColor.withAlpha(30)),
                               shape:
                                   Border(bottom: BorderSide(color: tileColor)),
                               title:

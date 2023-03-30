@@ -8,6 +8,8 @@ import 'package:flutter/material.dart' as mat;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:intl/intl.dart';
 
+import 'adminfeedback/adminfeedback.dart';
+
 class Admin extends StatefulWidget {
   Admin({Key? key}) : super(key: key);
 
@@ -18,7 +20,7 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   DateFormat dateFormat = DateFormat("dd of MMMM yyyy");
   final _date = DateTime.now();
-  int _navIndex = 3;
+  int _navIndex = 2;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -31,53 +33,36 @@ class _AdminState extends State<Admin> {
             pane: NavigationPane(
                 selected: _navIndex,
                 onChanged: (value) {
-                  if (value == 0) {
-                    setState(() {
-                      _navIndex = 0;
-                    });
-                  }
-                  if (value == 1) {
-                    setState(() {
-                      _navIndex = 1;
-                    });
-                  }
-                  if (value == 2) {
-                    setState(() {
-                      _navIndex = 2;
-                    });
-                  }
-                  if (value == 3) {
-                    setState(() {
-                      _navIndex = 3;
-                    });
-                  }
+                  setState(() {
+                    _navIndex = value;
+                  });
                 },
                 items: [
                   PaneItem(
                       icon: const Icon(FluentIcons.home),
-                      title: const Text("Home")),
+                      title: const Text("Home"), body: AdminHome()),
                   PaneItem(
                       icon: const Icon(FluentIcons.people),
-                      title: const Text("Students")),
+                      title: const Text("Students"),
+                      body: AdminStudents()
+                  ),
+                  PaneItem(
+                    icon: const Icon(FluentIcons.feedback),
+                    title: const Text("Feedback"),
+                    body: AdminFeedback()
+                  ),
                   PaneItem(
                       icon: const Icon(FluentIcons.action_center),
-                      title: const Text("Teachers")),
+                      title: const Text("Teachers"),
+                      body: AdminTeachers()
+                  ),
                   PaneItem(
                       icon: const Icon(FluentIcons.registry_editor),
-                      title: const Text("Register")),
-                  PaneItem(
-                      icon: const Icon(FluentIcons.report_document),
-                      title: const Text("Reports"))
+                      title: const Text("Register"),
+                      body: AdminRegister()
+                  ),
                 ]),
-            content: NavigationBody(
-              index: _navIndex,
-              children: [
-                AdminHome(),
-                AdminStudents(),
-                AdminTeachers(),
-                AdminRegister()
-              ],
-            ),
+
             appBar: const NavigationAppBar(
                 title: Center(
               child: Text(
